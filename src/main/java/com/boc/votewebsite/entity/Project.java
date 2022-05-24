@@ -1,8 +1,6 @@
 package com.boc.votewebsite.entity;
 
 import lombok.Data;
-
-import java.sql.Time;
 import java.sql.Timestamp;
 
 @Data

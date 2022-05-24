@@ -62,9 +62,11 @@ public class VoteController {
         }
         return result;
     }
-
+/*
+    由项目ID，评分人ID个被评分人ID来确认评分的条目，评分成功返回受影响的行数也就是数字1
+*/
     @PostMapping("/vote")
-    public JSONObject Vote(@RequestBody JSONObject jsonParam){
+    public JSONObject vote(@RequestBody JSONObject jsonParam){
         JSONObject result = new JSONObject();
         Integer score;
         Integer projectId;
@@ -88,6 +90,40 @@ public class VoteController {
             result.put("return_msg", "投票成功");
             result.put("data", "共有"+ lines+ "条数据更新");
         }
+        else{
+            result.put("return_code", "9999");
+            result.put("return_msg", "传入数据错误");
+        }
         return  result;
+    }
+
+    @GetMapping("/vote")
+    public JSONObject getVoteStatus(@RequestBody JSONObject jsonParam){
+        JSONObject result = new JSONObject();
+        Integer projectId;
+        Integer voteId;
+        Integer voterId;
+        try {
+            projectId = Integer.parseInt(jsonParam.get("projectId").toString());
+            voteId = Integer.parseInt(jsonParam.get("voteId").toString());
+            voterId = Integer.parseInt(jsonParam.get("voterId").toString());
+
+        } catch (NumberFormatException e) {
+            result.put("return_code", "9999");
+            result.put("return_msg", "传入数据错误");
+            e.printStackTrace();
+            return result;
+        }
+        Integer score = voteService.getScore(projectId,voteId,voterId);
+        if(score >= 0){
+            result.put("return_code", "0");
+            result.put("return_msg", "查找成功");
+            result.put("data", score);
+        }
+        else {
+            result.put("return_code", "9999");
+            result.put("return_msg", "找不到该投票记录");
+        }
+        return result;
     }
 }
