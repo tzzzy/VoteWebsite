@@ -4,9 +4,9 @@ import lombok.Data;
 
 @Data
 public class Staff {
-    private Integer staffId;
+    private Integer staff_id;
     private Integer institution;
-    private Integer password;
+    private String password;
     private char type;
     private String name;
     private String position;
