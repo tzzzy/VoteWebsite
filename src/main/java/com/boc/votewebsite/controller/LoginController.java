@@ -5,13 +5,12 @@ import com.boc.votewebsite.entity.Staff;
 import com.boc.votewebsite.entity.StaffIdType;
 import com.boc.votewebsite.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class LoginController {
     @Autowired
     private StaffService staffService;
@@ -20,7 +19,7 @@ public class LoginController {
 返回找到的管理员的id
 没找到返回错误
  */
-    @GetMapping("/login")
+    @PostMapping("/login")
     public JSONObject  login(@RequestBody JSONObject jsonParam) {
         JSONObject result = new JSONObject();
         Integer id;

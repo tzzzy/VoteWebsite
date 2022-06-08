@@ -2,8 +2,10 @@ package com.boc.votewebsite.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class StaffIdType {
+public class StaffIdType implements Serializable {
     private Integer staffId;
     private char type;
 

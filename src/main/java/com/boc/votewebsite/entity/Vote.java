@@ -2,8 +2,10 @@ package com.boc.votewebsite.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class Vote {
+public class Vote implements Serializable {
     private Integer id;
     private Integer projectId;
     private Integer voteId;
