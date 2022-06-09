@@ -1,9 +1,12 @@
 package com.boc.votewebsite.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.boc.votewebsite.entity.StaffExport;
 import com.boc.votewebsite.service.StaffService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -43,5 +46,20 @@ public class StaffController {
         result.put("return_msg", "查找成功");
         result.put("data", staffService.findByStaffName(name));
         return  result;
+    }
+
+    @GetMapping("/staff_export")
+    public JSONObject getAllStaffExport(){
+        JSONObject result = new JSONObject();
+        List<StaffExport> staffs = staffService.findAllExport();
+        if(staffs.size()==0){
+            result.put("return_code", "9999");
+            result.put("return_msg", "没有用户，请添加");
+            return  result;
+        }
+        result.put("return_code", "0");
+        result.put("return_msg", "导出数据成功");
+        result.put("data",staffs);
+        return result;
     }
 }

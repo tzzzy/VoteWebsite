@@ -1,6 +1,7 @@
 package com.boc.votewebsite.service;
 
 import com.boc.votewebsite.entity.Vote;
+import com.boc.votewebsite.entity.VoteList;
 import com.boc.votewebsite.mapper.VoteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class VoteService {
     @Autowired
     private VoteMapper voteMapper;
 
-    public List<Vote> getVoteList(Integer projectId, Integer voterId){
+    public List<VoteList> getVoteList(Integer projectId, Integer voterId){
         return  voteMapper.findByVoterIdAndProjectId(voterId, projectId);
     }
 

@@ -9,6 +9,6 @@ import java.util.List;
 
 @Mapper
 public interface ProjectMapper {
-    @Select("SELECT * FROM PROJECT WHERE PROJECT_ID =#{projectId} AND START_TIME < #{time} AND END_TIME > #{time}")
-    List<Project> findByIdAndTime(Integer projectId, Timestamp time);
+    @Select("SELECT * FROM PROJECT WHERE START_TIME < #{time} AND END_TIME > #{time}")
+    List<Project> findByTime(Timestamp time);
 }

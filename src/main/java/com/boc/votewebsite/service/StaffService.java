@@ -1,6 +1,7 @@
 package com.boc.votewebsite.service;
 
 import com.boc.votewebsite.entity.Staff;
+import com.boc.votewebsite.entity.StaffExport;
 import com.boc.votewebsite.entity.StaffManage;
 import com.boc.votewebsite.mapper.StaffMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,9 @@ public class StaffService {
 
     public Integer updateById(Integer staffId, Integer institution, char type, String staffName){
         return staffMapper.updateById(staffId,institution,type,staffName);
+    }
+
+    public List<StaffExport> findAllExport(){
+        return staffMapper.findAllExport();
     }
 }

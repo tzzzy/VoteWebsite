@@ -25,25 +25,23 @@ public class VoteController {
 其中包括被投票人的ID和分数，
 分数可以用来确认是否已经投过票
  */
-    @GetMapping("/vote-list")
-    public JSONObject getVoteList(@RequestParam JSONObject jsonParam) {
+    @PostMapping("/vote-list")
+    public JSONObject getVoteList(@RequestBody JSONObject jsonParam) {
         JSONObject result = new JSONObject();
-        char type;
-        Integer voteId;
+        Integer voterId;
         Date date = new Date();
         Timestamp time = new Timestamp(date.getTime());
         try {
-            type = jsonParam.get("projectId").toString().charAt(0);
-            voteId = Integer.parseInt(jsonParam.get("voteId").toString());
+            voterId = Integer.parseInt(jsonParam.get("voterId").toString());
 
         } catch (NumberFormatException e) {
             result.put("return_code", "9999");
-            result.put("return_msg", "传入项目ID或者用户ID错误");
+            result.put("return_msg", "传入用户ID错误");
             e.printStackTrace();
             return result;
         }
-        List<Project> projectList = projectService.findByIdAndTime(projectId, time);
-        Object voteList = voteService.getVoteList(projectId, voteId);
+        List<Project> projectList = projectService.findByTime(time);
+        Object voteList = voteService.getVoteList(projectList.get(0).getProjectID(), voterId);
         try {
             if(voteList == null || projectList.size() == 0){
                 result.put("return_code", "9999");

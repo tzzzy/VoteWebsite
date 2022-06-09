@@ -14,7 +14,7 @@ public class ProjectService {
     @Autowired
     private ProjectMapper projectMapper;
 
-    public List<Project> findByIdAndTime(Integer id, Timestamp time){
-        return projectMapper.findByIdAndTime(id, time);
+    public List<Project> findByTime(Timestamp time){
+        return projectMapper.findByTime(time);
     }
 }
