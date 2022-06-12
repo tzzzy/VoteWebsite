@@ -29,10 +29,12 @@ public class VoteController {
     public JSONObject getVoteList(@RequestBody JSONObject jsonParam) {
         JSONObject result = new JSONObject();
         String voterId;
+        String type;
         Date date = new Date();
         Timestamp time = new Timestamp(date.getTime());
         try {
             voterId = jsonParam.get("voterId").toString();
+            type = jsonParam.get("type").toString();
 
         } catch (NumberFormatException e) {
             result.put("return_code", "9999");
@@ -41,7 +43,7 @@ public class VoteController {
             return result;
         }
         List<Project> projectList = projectService.findByTime(time);
-        Object voteList = voteService.getVoteList(projectList.get(0).getProjectID(), voterId);
+        Object voteList = voteService.getVoteList(projectList.get(0).getProjectID(), voterId,type);
         try {
             if(voteList == null || projectList.size() == 0){
                 result.put("return_code", "9999");

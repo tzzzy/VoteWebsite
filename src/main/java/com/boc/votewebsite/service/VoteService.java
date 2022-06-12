@@ -14,8 +14,8 @@ public class VoteService {
     @Autowired
     private VoteMapper voteMapper;
 
-    public List<VoteList> getVoteList(Integer projectId, String voterId){
-        return  voteMapper.findByVoterIdAndProjectId(voterId, projectId);
+    public List<VoteList> getVoteList(Integer projectId, String voterId, String tyope){
+        return  voteMapper.findByVoterIdAndProjectId(voterId, projectId, tyope);
     }
 
     public Integer vote(Integer score, Integer projectId, String voteId, String voterId){
