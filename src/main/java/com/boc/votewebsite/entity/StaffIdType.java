@@ -6,10 +6,10 @@ import java.io.Serializable;
 
 @Data
 public class StaffIdType implements Serializable {
-    private Integer staffId;
+    private String staffId;
     private char type;
 
-    public StaffIdType(Integer staffId, char type) {
+    public StaffIdType(String staffId, char type) {
         this.staffId = staffId;
         this.type = type;
     }

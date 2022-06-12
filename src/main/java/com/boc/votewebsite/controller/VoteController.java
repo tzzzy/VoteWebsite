@@ -28,11 +28,11 @@ public class VoteController {
     @PostMapping("/vote-list")
     public JSONObject getVoteList(@RequestBody JSONObject jsonParam) {
         JSONObject result = new JSONObject();
-        Integer voterId;
+        String voterId;
         Date date = new Date();
         Timestamp time = new Timestamp(date.getTime());
         try {
-            voterId = Integer.parseInt(jsonParam.get("voterId").toString());
+            voterId = jsonParam.get("voterId").toString();
 
         } catch (NumberFormatException e) {
             result.put("return_code", "9999");
@@ -66,13 +66,13 @@ public class VoteController {
         JSONObject result = new JSONObject();
         Integer score;
         Integer projectId;
-        Integer voteId;
-        Integer voterId;
+        String voteId;
+        String voterId;
         try {
             score = Integer.parseInt(jsonParam.get("score").toString());
             projectId = Integer.parseInt(jsonParam.get("projectId").toString());
-            voteId = Integer.parseInt(jsonParam.get("voteId").toString());
-            voterId = Integer.parseInt(jsonParam.get("voterId").toString());
+            voteId = jsonParam.get("voteId").toString();
+            voterId = jsonParam.get("voterId").toString();
 
         } catch (NumberFormatException e) {
             result.put("return_code", "9999");

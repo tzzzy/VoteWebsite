@@ -22,14 +22,14 @@ public class LoginController {
     @PostMapping("/login")
     public JSONObject  login(@RequestBody JSONObject jsonParam) {
         JSONObject result = new JSONObject();
-        Integer id;
+        String id;
         if (null == jsonParam.get("id").toString()||null == jsonParam.get("password").toString()) {
             result.put("return_code","9999");
             result.put("return_msg", "传入用ID或密码为空");
             return result;
         }
         try {
-            id = Integer.parseInt(jsonParam.get("id").toString());
+            id = jsonParam.get("id").toString();
 
         } catch (NumberFormatException e) {
             result.put("return_code", "9999");

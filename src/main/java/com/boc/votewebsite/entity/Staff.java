@@ -6,15 +6,15 @@ import java.io.Serializable;
 
 @Data
 public class Staff implements Serializable {
-    private Integer staff_id;
-    private Integer institution;
+    private String staff_id;
+    private String institution;
     private String password;
     private char type;
     private String name;
     private String position;
     private String description;
 
-    public Staff(Integer staff_id, Integer institution, String password, char type, String name, String position, String description) {
+    public Staff(String staff_id, String institution, String password, char type, String name, String position, String description) {
         this.staff_id = staff_id;
         this.institution = institution;
         this.password = password;

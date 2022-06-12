@@ -14,15 +14,15 @@ public class VoteService {
     @Autowired
     private VoteMapper voteMapper;
 
-    public List<VoteList> getVoteList(Integer projectId, Integer voterId){
+    public List<VoteList> getVoteList(Integer projectId, String voterId){
         return  voteMapper.findByVoterIdAndProjectId(voterId, projectId);
     }
 
-    public Integer vote(Integer score, Integer projectId, Integer voteId, Integer voterId){
+    public Integer vote(Integer score, Integer projectId, String voteId, String voterId){
         return voteMapper.voteByProjectIdAndVoteIdAndVoterId(score, projectId, voteId, voterId);
     }
 
-    public Integer getScore(Integer projectId, Integer voteId, Integer voterId){
+    public Integer getScore(Integer projectId, String voteId, String voterId){
         List<Vote> votes = voteMapper.findByProjectIdAndVoteIdAndVoterId(projectId,voteId, voterId);
         if(votes.size()==0){
             return -1;

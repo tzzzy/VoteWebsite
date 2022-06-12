@@ -13,7 +13,7 @@ import java.util.List;
 public class StaffService {
     @Autowired
     private StaffMapper staffMapper;
-    public List<Staff> matchStaffIdPassword(Integer staffId, String password){
+    public List<Staff> matchStaffIdPassword(String staffId, String password){
         return staffMapper.findByStaffIdPassword(staffId, password);
     }
 

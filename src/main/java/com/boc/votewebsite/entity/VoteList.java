@@ -2,18 +2,20 @@ package com.boc.votewebsite.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class VoteList {
+public class VoteList implements Serializable {
     private Integer id;
     private Integer projectId;
-    private Integer voteId;
+    private String voteId;
     private String voteName;
     private String type;
-    private Integer voterId;
+    private String voterId;
     private Integer score;
 
-    public VoteList(Integer id, Integer projectId, Integer voteId,
-                    String voteName, String type, Integer voterId, Integer score) {
+    public VoteList(Integer id, Integer projectId, String voteId,
+                    String voteName, String type, String voterId, Integer score) {
         this.id = id;
         this.projectId = projectId;
         this.voteId = voteId;
