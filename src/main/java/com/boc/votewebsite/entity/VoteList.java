@@ -6,17 +6,16 @@ import java.io.Serializable;
 
 @Data
 public class VoteList implements Serializable {
-    private Integer id;
+
     private Integer projectId;
     private String voteId;
     private String voteName;
     private String type;
     private String voterId;
-    private Integer score;
+    private Double score;
 
-    public VoteList(Integer id, Integer projectId, String voteId,
-                    String voteName, String type, String voterId, Integer score) {
-        this.id = id;
+    public VoteList(Integer projectId, String voteId,
+                    String voteName, String type, String voterId, Double score) {
         this.projectId = projectId;
         this.voteId = voteId;
         this.voteName = voteName;

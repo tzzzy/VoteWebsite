@@ -2,6 +2,7 @@ package com.boc.votewebsite.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.boc.votewebsite.entity.Project;
+import com.boc.votewebsite.entity.VoteList;
 import com.boc.votewebsite.service.ProjectService;
 import com.boc.votewebsite.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,8 @@ public class VoteController {
             return result;
         }
         List<Project> projectList = projectService.findByTime(time);
-        Object voteList = voteService.getVoteList(projectList.get(0).getProjectID(), voterId,type);
         try {
+            List<VoteList> voteList = voteService.getVoteList(projectList.get(0).getProjectID(), voterId,type);
             if(voteList == null || projectList.size() == 0){
                 result.put("return_code", "9999");
                 result.put("return_msg", "该项目不在开放期间或该项目不存在");
@@ -66,12 +67,12 @@ public class VoteController {
     @PostMapping("/vote")
     public JSONObject vote(@RequestBody JSONObject jsonParam){
         JSONObject result = new JSONObject();
-        Integer score;
+        Double score;
         Integer projectId;
         String voteId;
         String voterId;
         try {
-            score = Integer.parseInt(jsonParam.get("score").toString());
+            score = Double.parseDouble(jsonParam.get("score").toString());
             projectId = Integer.parseInt(jsonParam.get("projectId").toString());
             voteId = jsonParam.get("voteId").toString();
             voterId = jsonParam.get("voterId").toString();
@@ -90,38 +91,38 @@ public class VoteController {
         }
         else{
             result.put("return_code", "9999");
-            result.put("return_msg", "传入数据错误");
+            result.put("return_msg", "投票数据更新失败");
         }
         return  result;
     }
 
-//    @GetMapping("/vote")
-//    public JSONObject getVoteStatus(@RequestBody JSONObject jsonParam){
-//        JSONObject result = new JSONObject();
-//        Integer projectId;
-//        Integer voteId;
-//        Integer voterId;
-//        try {
-//            projectId = Integer.parseInt(jsonParam.get("projectId").toString());
-//            voteId = Integer.parseInt(jsonParam.get("voteId").toString());
-//            voterId = Integer.parseInt(jsonParam.get("voterId").toString());
-//
-//        } catch (NumberFormatException e) {
-//            result.put("return_code", "9999");
-//            result.put("return_msg", "传入数据错误");
-//            e.printStackTrace();
-//            return result;
-//        }
-//        Integer score = voteService.getScore(projectId,voteId,voterId);
-//        if(score >= 0){
-//            result.put("return_code", "0");
-//            result.put("return_msg", "查找成功");
-//            result.put("data", score);
-//        }
-//        else {
-//            result.put("return_code", "9999");
-//            result.put("return_msg", "找不到该投票记录");
-//        }
-//        return result;
-//    }
+    @PostMapping("/vote-status")
+    public JSONObject getVoteStatus(@RequestBody JSONObject jsonParam){
+        JSONObject result = new JSONObject();
+        Integer projectId;
+        String voteId;
+        String voterId;
+        try {
+            projectId = Integer.parseInt(jsonParam.get("projectId").toString());
+            voteId = jsonParam.get("voteId").toString();
+            voterId = jsonParam.get("voterId").toString();
+
+        } catch (NumberFormatException e) {
+            result.put("return_code", "9999");
+            result.put("return_msg", "传入数据错误");
+            e.printStackTrace();
+            return result;
+        }
+        Double score = voteService.getScore(projectId,voteId,voterId);
+        if(score >= 0 || score == null){
+            result.put("return_code", "0");
+            result.put("return_msg", "查找成功");
+            result.put("data", score);
+        }
+        else {
+            result.put("return_code", "9999");
+            result.put("return_msg", "找不到该投票记录");
+        }
+        return result;
+    }
 }
