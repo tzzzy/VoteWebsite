@@ -25,11 +25,15 @@ public class StaffService {
         return  staffMapper.findByName(staffName);
     }
 
-    public Integer updateById(Integer staffId, Integer institution, char type, String staffName){
-        return staffMapper.updateById(staffId,institution,type,staffName);
+    public Integer updateById(String staffId, String institution, char type, String staffName, String position){
+        return staffMapper.updateById(staffId,institution,type,staffName, position);
     }
 
     public List<StaffExport> findAllExport(){
         return staffMapper.findAllExport();
+    }
+
+    public Integer deleteById(String id){
+        return staffMapper.deleteById(id);
     }
 }

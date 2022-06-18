@@ -4,9 +4,8 @@ package com.boc.votewebsite.mapper;
 import com.boc.votewebsite.entity.Staff;
 import com.boc.votewebsite.entity.StaffExport;
 import com.boc.votewebsite.entity.StaffManage;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,9 +21,16 @@ public interface StaffMapper {
     @Select("SELECT STAFF_ID, INSTITUTION.INSTITUTION_NAME, INSTITUTION.INSTITUTION_ID, TYPE,STAFF.STAFF_NAME,POSITION FROM STAFF ,INSTITUTION WHERE STAFF_ID <> '123456789' AND STAFF.INSTITUTION = INSTITUTION.INSTITUTION_ID AND STAFF_NAME = #{staffName}")
     List<StaffManage> findByName(String staffName);
 
-    @Update("UPDATE STAFF SET INSTITUTION = #{institution},TYPE = #{type}, STAFF_NAME = #{staffName} WHERE STAFF_ID = #{staffId}")
-    Integer updateById(Integer staffId, Integer institution, char type, String staffName);
+    @Update("UPDATE STAFF SET INSTITUTION = #{institution},TYPE = #{type}, STAFF_NAME = #{staffName}, POSITION = #{position} WHERE STAFF_ID = #{staffId}")
+    Integer updateById(String staffId, String institution, char type, String staffName, String position);
 
     @Select("SELECT STAFF_ID, STAFF_NAME, INSTITUTION, PASSWORD FROM STAFF WHERE STAFF_ID <> '123456789'")
     List<StaffExport> findAllExport();
+
+    @Delete("DELETE FROM STAFF WHERE STAFF_ID =#{id}")
+    Integer deleteById(String id);
+
+    @Insert("INSERT INTO STAFF VALUES (#{id}, #{institution}, null, #{type}, #{name}, #{position})")
+    Integer addStaff(String id, String institution, char type, String name, String position);
+
 }
