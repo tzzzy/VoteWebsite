@@ -12,4 +12,5 @@ public class Project implements Serializable {
     private Timestamp endTime;
     private Timestamp createTime;
     private Integer season;
+    private  Integer year;
 }

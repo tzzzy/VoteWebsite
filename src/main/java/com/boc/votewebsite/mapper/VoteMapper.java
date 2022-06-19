@@ -2,6 +2,7 @@ package com.boc.votewebsite.mapper;
 
 import com.boc.votewebsite.entity.Vote;
 import com.boc.votewebsite.entity.VoteList;
+import com.boc.votewebsite.entity.VoteResult;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public interface VoteMapper {
     @Delete("DELETE FROM VOTE WHERE PROJECT_ID=#{projectId}")
     Integer deleteVote(Integer projectId);
 
+    @Select("SELECT VOTE.VOTE_ID, STAFF.STAFF_NAME, STAFF.TYPE,INSTITUTION.INSTITUTION_ID, INSTITUTION.INSTITUTION_NAME, VOTE.VOTER_ID,VOTER.INSTITUTION, VOTE.SCORE FROM VOTE INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID INNER JOIN STAFF VOTER ON VOTE.VOTER_ID = VOTER.STAFF_ID INNER JOIN INSTITUTION on STAFF.INSTITUTION = INSTITUTION.INSTITUTION_ID WHERE PROJECT_ID=#{projectId} AND STAFF.TYPE=#{type} ORDER BY VOTE.VOTE_ID")
+    List<VoteResult> findByProjectAndStaffType(Integer projectId, char type);
 
 }

@@ -3,6 +3,7 @@ package com.boc.votewebsite.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.boc.votewebsite.entity.Project;
 import com.boc.votewebsite.entity.VoteList;
+import com.boc.votewebsite.entity.VoteResult;
 import com.boc.votewebsite.service.ProjectService;
 import com.boc.votewebsite.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,5 +125,39 @@ public class VoteController {
             result.put("return_msg", "找不到该投票记录");
         }
         return result;
+    }
+
+    @PostMapping("/vote-result")
+    public JSONObject getVoteResult(@RequestBody JSONObject jsonParam) {
+        JSONObject result = new JSONObject();
+        Integer season;
+        Integer year;
+        char type;
+        try {
+            season = Integer.parseInt(jsonParam.get("season").toString());
+            year = Integer.parseInt(jsonParam.get("year").toString());
+            type = jsonParam.get("type").toString().charAt(0);
+        } catch (Exception e) {
+            result.put("return_code", "9999");
+            result.put("return_msg", "传入数据错误");
+            e.printStackTrace();
+            return result;
+        }
+        List<Project> project = projectService.findBySeasonAndYear(season, year);
+        if(project.size() == 0){
+            result.put("return_code", "9999");
+            result.put("return_msg", year + "年第" + season + "不存在项目，请创建");
+            return  result;
+        }
+        List<VoteResult> data = voteService.findByProjectIdAndStaffType(project.get(0).getProjectID(),type);
+        if(data.size() == 0){
+            result.put("return_code", "9999");
+            result.put("return_msg", "该项目缺少投票表，请联系数据库管理员");
+            return  result;
+        }
+        result.put("return_code", "0");
+        result.put("return_msg", "查找成功");
+        result.put("data", data);
+        return  result;
     }
 }

@@ -3,6 +3,7 @@ package com.boc.votewebsite.service;
 import com.boc.votewebsite.entity.StaffManage;
 import com.boc.votewebsite.entity.Vote;
 import com.boc.votewebsite.entity.VoteList;
+import com.boc.votewebsite.entity.VoteResult;
 import com.boc.votewebsite.mapper.StaffMapper;
 import com.boc.votewebsite.mapper.VoteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +91,10 @@ public class VoteService {
             }
         }
         return 1;
+    }
+
+    public List<VoteResult> findByProjectIdAndStaffType(Integer projectId, char type){
+        return voteMapper.findByProjectAndStaffType(projectId, type);
     }
 
 }
