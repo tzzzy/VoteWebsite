@@ -8,22 +8,22 @@ import java.io.Serializable;
 @Data
 public class VoteResult implements Serializable {
     private  String voteId;
-    private String name;
+    private String staffName;
     private char staffType;
-    private String institutionId;
-    private String institutionName;
-    private String voterID;
+    private String staffInstitution;
+    private String staffInstitutionName;
     private String voterInstitution;
-    private Double score;
+    private String voteType;
+    private Double total;
 
-    public VoteResult(String voteId, String name, char staffType, String institutionId, String institutionName, String voterID, String voterInstitution, Double score) {
+    public VoteResult(String voteId, String staffName, char staffType, String staffInstitution, String staffInstitutionName, String voterInstitution, String voteType, Double total) {
         this.voteId = voteId;
-        this.name = name;
+        this.staffName = staffName;
         this.staffType = staffType;
-        this.institutionId = institutionId;
-        this.institutionName = institutionName;
-        this.voterID = voterID;
+        this.staffInstitution = staffInstitution;
+        this.staffInstitutionName = staffInstitutionName;
         this.voterInstitution = voterInstitution;
-        this.score = score;
+        this.voteType = voteType;
+        this.total = total;
     }
 }

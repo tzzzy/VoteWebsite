@@ -1,9 +1,6 @@
 package com.boc.votewebsite.service;
 
-import com.boc.votewebsite.entity.StaffManage;
-import com.boc.votewebsite.entity.Vote;
-import com.boc.votewebsite.entity.VoteList;
-import com.boc.votewebsite.entity.VoteResult;
+import com.boc.votewebsite.entity.*;
 import com.boc.votewebsite.mapper.StaffMapper;
 import com.boc.votewebsite.mapper.VoteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +92,14 @@ public class VoteService {
 
     public List<VoteResult> findByProjectIdAndStaffType(Integer projectId, char type){
         return voteMapper.findByProjectAndStaffType(projectId, type);
+    }
+
+    public List<VoteProgress> getProgressById(Integer projectId) {
+        return voteMapper.getProgressById(projectId);
+    }
+
+    public List<VoteResult> findByStaffTypeAndYear(Integer year, char type){
+        return voteMapper.findByStaffTypeAndYear(year, type);
     }
 
 }

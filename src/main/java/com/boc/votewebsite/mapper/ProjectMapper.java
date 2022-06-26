@@ -23,4 +23,7 @@ public interface ProjectMapper {
 
     @Delete("DELETE FROM PROJECT WHERE PROJECT_ID=#{projectId}")
     Integer deleteProject(Integer projectId);
+
+    @Select("SELECT * FROM PROJECT WHERE YEAR =#{year}")
+    List<Project> findByYear(Integer year);
 }

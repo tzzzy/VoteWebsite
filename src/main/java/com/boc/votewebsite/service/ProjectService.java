@@ -32,6 +32,7 @@ public class ProjectService {
         return projectMapper.deleteProject(projectId);
     }
 
-
-
+    public List<Project> findByYear(Integer year){
+        return projectMapper.findByYear(year);
+    }
 }

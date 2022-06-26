@@ -33,4 +33,7 @@ public interface StaffMapper {
     @Insert("INSERT INTO STAFF VALUES (#{id}, #{institution}, null, #{type}, #{name}, #{position})")
     Integer addStaff(String id, String institution, char type, String name, String position);
 
+    @Select("SELECT * FROM STAFF WHERE STAFF_ID = #{id}")
+    List<Staff> findById(String id);
+
 }

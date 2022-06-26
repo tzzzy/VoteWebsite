@@ -36,4 +36,12 @@ public class StaffService {
     public Integer deleteById(String id){
         return staffMapper.deleteById(id);
     }
+
+    public Integer addStaff(String id, String institution, char type, String name, String position){
+        return staffMapper.addStaff(id,institution,type,name,position);
+    }
+
+    public List<Staff> findById(String id){
+        return staffMapper.findById(id);
+    }
 }

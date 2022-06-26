@@ -3,6 +3,7 @@ package com.boc.votewebsite.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.boc.votewebsite.entity.Project;
 import com.boc.votewebsite.entity.VoteList;
+import com.boc.votewebsite.entity.VoteProgress;
 import com.boc.votewebsite.entity.VoteResult;
 import com.boc.votewebsite.service.ProjectService;
 import com.boc.votewebsite.service.VoteService;
@@ -143,13 +144,30 @@ public class VoteController {
             e.printStackTrace();
             return result;
         }
-        List<Project> project = projectService.findBySeasonAndYear(season, year);
+        if(year != 0){
+            List<Project> project = projectService.findBySeasonAndYear(season, year);
+            if(project.size() == 0){
+                result.put("return_code", "9999");
+                result.put("return_msg", year + "年第" + season + "不存在项目，请创建");
+                return  result;
+            }
+            List<VoteResult> data = voteService.findByProjectIdAndStaffType(project.get(0).getProjectID(),type);
+            if(data.size() == 0){
+                result.put("return_code", "9999");
+                result.put("return_msg", "该项目缺少投票表，请联系数据库管理员");
+                return  result;
+            }
+            result.put("return_code", "0");
+            result.put("return_msg", "查找成功");
+            result.put("data", data);
+        }
+        List<Project> project = projectService.findByYear(year);
         if(project.size() == 0){
             result.put("return_code", "9999");
-            result.put("return_msg", year + "年第" + season + "不存在项目，请创建");
+            result.put("return_msg", year + "年不存在项目，请创建");
             return  result;
         }
-        List<VoteResult> data = voteService.findByProjectIdAndStaffType(project.get(0).getProjectID(),type);
+        List<VoteResult> data = voteService.findByStaffTypeAndYear(year,type);
         if(data.size() == 0){
             result.put("return_code", "9999");
             result.put("return_msg", "该项目缺少投票表，请联系数据库管理员");
@@ -159,5 +177,23 @@ public class VoteController {
         result.put("return_msg", "查找成功");
         result.put("data", data);
         return  result;
+    }
+
+    @GetMapping("/vote-progress")
+    public JSONObject getVoteProgress(){
+        JSONObject result = new JSONObject();
+        Date date = new Date();
+        Timestamp time = new Timestamp(date.getTime());
+        List<Project> projectList = projectService.findByTime(time);
+        if(projectList.size() == 0){
+            result.put("return_code", "9999");
+            result.put("return_msg", "该项目不在开放期间或该项目不存在");
+            return result;
+        }
+        List<VoteProgress> data = voteService.getProgressById(projectList.get(0).getProjectID());
+        result.put("return_code", "0");
+        result.put("return_msg", "查找成功");
+        result.put("data", data);
+        return result;
     }
 }

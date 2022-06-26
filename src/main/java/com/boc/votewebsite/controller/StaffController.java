@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -105,6 +106,26 @@ public class StaffController {
         }
         result.put("return_code", "0");
         result.put("return_msg", "删除成功");
+        return result;
+    }
+
+    @PostMapping("/staff-import")
+    public JSONObject importStaff(@RequestBody JSONObject jsonParam){
+        JSONObject result = new JSONObject();
+        List<Map> staffs = (List<Map>) jsonParam.get("staffs");
+        Integer count = 0;
+        for(int i = 0; i < jsonParam.size(); i++){
+            Integer exist = staffService.findById(staffs.get(i).get("id").toString()).size();
+            if(exist > 0){
+                continue;
+            }
+            Integer re = staffService.addStaff(staffs.get(i).get("id").toString(),
+                    staffs.get(i).get("institution").toString(), staffs.get(i).get("type").toString().charAt(0),
+                    staffs.get(i).get("name").toString(), staffs.get(i).get("position").toString());
+            count += re;
+        }
+        result.put("return_code", "0");
+        result.put("return_msg", "导入用户" + staffs.size() + "人,创建成功"+ count + "人");
         return result;
     }
 
