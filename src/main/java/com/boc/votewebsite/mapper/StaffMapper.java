@@ -36,4 +36,7 @@ public interface StaffMapper {
     @Select("SELECT * FROM STAFF WHERE STAFF_ID = #{id}")
     List<Staff> findById(String id);
 
+    @Update("UPDATE STAFF SET PASSWORD = 456789 WHERE STAFF_ID = 1259138")
+    Integer updatePasswordByStaffId(String id, String password);
+
 }

@@ -3,6 +3,7 @@ package com.boc.votewebsite.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.boc.votewebsite.entity.Project;
 import com.boc.votewebsite.entity.Staff;
+import com.boc.votewebsite.entity.StaffExport;
 import com.boc.votewebsite.entity.StaffManage;
 import com.boc.votewebsite.service.ProjectService;
 import com.boc.votewebsite.service.StaffService;
@@ -17,6 +18,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
+import static cn.hutool.core.util.RandomUtil.randomInt;
 
 @RestController
 @CrossOrigin
@@ -55,7 +58,7 @@ public class ProjectController {
         List<Project> pro = projectService.findBySeasonAndYear(season, year);
         if(pro.size() > 0){
             result.put("return_code", "9999");
-            result.put("return_msg", year.toString()+"年第"+season.toString()+"季度的项目已存在");
+            result.put("return_msg", year+"年第"+season+"季度的项目已存在");
             return result;
         }
         //创建项目表中的记录
@@ -74,7 +77,17 @@ public class ProjectController {
             result.put("data", projectService.deleteProject(projectId));
             return result;
         }
-        result.put("return_code", "0");
+        //更新密码
+        List<StaffExport> staffs= staffService.findAllExport();
+        for(int i = 0;i < staffs.size(); i++){
+            Integer password = randomInt(100000,999999);
+            Integer updateRe = staffService.updatePasswordByStaffId(staffs.get(i).getStaff_id(),password.toString());
+            if(updateRe==0){
+                result.put("return_msg", "创建密码失败，请重试" + voteService.deleteVotes(projectId).toString());
+                result.put("data", projectService.deleteProject(projectId));
+                return result;
+            }
+        }
         result.put("return_msg", "创建项目成功");
         return  result;
     }

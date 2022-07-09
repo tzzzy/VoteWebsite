@@ -4,6 +4,7 @@ import com.boc.votewebsite.entity.Staff;
 import com.boc.votewebsite.entity.StaffExport;
 import com.boc.votewebsite.entity.StaffManage;
 import com.boc.votewebsite.mapper.StaffMapper;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,9 @@ public class StaffService {
 
     public List<Staff> findById(String id){
         return staffMapper.findById(id);
+    }
+
+    public Integer updatePasswordByStaffId(String id, String password) {
+        return staffMapper.updatePasswordByStaffId(id,password);
     }
 }
