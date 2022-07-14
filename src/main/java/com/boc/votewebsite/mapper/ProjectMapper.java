@@ -19,7 +19,7 @@ public interface ProjectMapper {
     List<Project> findBySeasonAndYear(Integer season, Integer year);
 
     @Insert("INSERT INTO PROJECT VALUES (PROJECT_SEQ.NEXTVAL, #{startTime}, #{endTime}, #{createTime}, #{season}, #{year})")
-    Integer addProject(Timestamp startTime, Timestamp endTime, Timestamp createTime, Integer season, Integer year);
+    Integer addProject(Integer projectId,Timestamp startTime, Timestamp endTime, Timestamp createTime, Integer season, Integer year);
 
     @Delete("DELETE FROM PROJECT WHERE PROJECT_ID=#{projectId}")
     Integer deleteProject(Integer projectId);

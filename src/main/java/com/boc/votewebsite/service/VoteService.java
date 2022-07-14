@@ -45,9 +45,6 @@ public class VoteService {
         List<StaffManage> staffs = staffMapper.findAll();
         for(int i = 0; i < staffs.size(); i++){
             for(int j = 0; j < staffs.size(); j++){
-                if(i==j){
-                    continue;
-                }
                 String voterId = staffs.get(i).getStaff_id();
                 char voterType = staffs.get(i).getType();
                 String voterIns = staffs.get(i).getInstitution_id();
@@ -91,7 +88,10 @@ public class VoteService {
     }
 
     public List<VoteResult> findByProjectIdAndStaffType(Integer projectId, char type){
-        return voteMapper.findByProjectAndStaffType(projectId, type);
+        if(type=='A'){
+            return voteMapper.findAResultByProjectId(projectId);
+        }
+        return voteMapper.findBResultByProjectId(projectId);
     }
 
     public List<VoteProgress> getProgressById(Integer projectId) {

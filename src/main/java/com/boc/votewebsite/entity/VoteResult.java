@@ -7,23 +7,23 @@ import java.io.Serializable;
 
 @Data
 public class VoteResult implements Serializable {
-    private  String voteId;
+    private  String staffId;
     private String staffName;
     private char staffType;
     private String staffInstitution;
     private String staffInstitutionName;
-    private String voterInstitution;
-    private String voteType;
-    private Double total;
+    private Double equal;
+    private Double supSub;
+    private Double average;
 
-    public VoteResult(String voteId, String staffName, char staffType, String staffInstitution, String staffInstitutionName, String voterInstitution, String voteType, Double total) {
-        this.voteId = voteId;
+    public VoteResult(String staffId, String staffName, char staffType, String staffInstitution, String staffInstitutionName, Double equal, Double supSub, Double average) {
+        this.staffId = staffId;
         this.staffName = staffName;
         this.staffType = staffType;
         this.staffInstitution = staffInstitution;
         this.staffInstitutionName = staffInstitutionName;
-        this.voterInstitution = voterInstitution;
-        this.voteType = voteType;
-        this.total = total;
+        this.equal = equal;
+        this.supSub = supSub;
+        this.average = average;
     }
 }

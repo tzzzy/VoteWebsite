@@ -25,7 +25,9 @@ public class ProjectService {
     }
 
     public Integer addProject(Timestamp startTime, Timestamp endTime, Timestamp createTime, Integer season, Integer year){
-        return projectMapper.addProject(startTime,endTime, createTime, season, year);
+        //2022年第一季度的项目id就是20221
+        Integer projectId = year*10+season;
+        return projectMapper.addProject(projectId, startTime,endTime, createTime, season, year);
     }
 
     public Integer deleteProject(Integer projectId){

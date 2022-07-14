@@ -144,14 +144,22 @@ public class VoteController {
             e.printStackTrace();
             return result;
         }
-        if(year != 0){
-            List<Project> project = projectService.findBySeasonAndYear(season, year);
-            if(project.size() == 0){
-                result.put("return_code", "9999");
-                result.put("return_msg", year + "年第" + season + "不存在项目，请创建");
-                return  result;
-            }
-            List<VoteResult> data = voteService.findByProjectIdAndStaffType(project.get(0).getProjectID(),type);
+        //先查找项目表中是否存在该年份的项目
+        List<Project> project = projectService.findByYear(year);
+        if(project.size() == 0){
+            result.put("return_code", "9999");
+            result.put("return_msg", year + "年不存在项目，请重新查找");
+            return  result;
+        }
+        if(season == 0){//查找全年结果去RESULT表中查找
+
+        }
+        Date date = new Date();
+        Timestamp time = new Timestamp(date.getTime());
+        List<Project> projectList = projectService.findByTime(time);
+        List<project> targetPorject = projectService.findBySeasonAndYear()
+        if(projectList.size() > 0){//当前有项目开放，从VOTE表中查找
+            List<VoteResult> data = voteService.findByProjectIdAndStaffType(projectList.get(0).getProjectID(),type);
             if(data.size() == 0){
                 result.put("return_code", "9999");
                 result.put("return_msg", "该项目缺少投票表，请联系数据库管理员");
@@ -160,23 +168,10 @@ public class VoteController {
             result.put("return_code", "0");
             result.put("return_msg", "查找成功");
             result.put("data", data);
-        }
-        List<Project> project = projectService.findByYear(year);
-        if(project.size() == 0){
-            result.put("return_code", "9999");
-            result.put("return_msg", year + "年不存在项目，请创建");
             return  result;
         }
         List<VoteResult> data = voteService.findByStaffTypeAndYear(year,type);
-        if(data.size() == 0){
-            result.put("return_code", "9999");
-            result.put("return_msg", "该项目缺少投票表，请联系数据库管理员");
-            return  result;
-        }
-        result.put("return_code", "0");
-        result.put("return_msg", "查找成功");
-        result.put("data", data);
-        return  result;
+
     }
 
     @GetMapping("/vote-progress")

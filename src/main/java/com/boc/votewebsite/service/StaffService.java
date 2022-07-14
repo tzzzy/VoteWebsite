@@ -1,5 +1,6 @@
 package com.boc.votewebsite.service;
 
+import com.boc.votewebsite.entity.InstitutionCType;
 import com.boc.votewebsite.entity.Staff;
 import com.boc.votewebsite.entity.StaffExport;
 import com.boc.votewebsite.entity.StaffManage;
@@ -8,7 +9,9 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StaffService {
@@ -49,4 +52,36 @@ public class StaffService {
     public Integer updatePasswordByStaffId(String id, String password) {
         return staffMapper.updatePasswordByStaffId(id,password);
     }
+
+    public Map<String,Integer> findCAmount(){
+        List<InstitutionCType> ins = staffMapper.findCAmount();
+        Map<String,Integer> insCPair = new HashMap<String,Integer>();
+        for(int i = 0; i < ins.size(); i++){
+            insCPair.put(ins.get(i).getInstitution(),ins.get(i).getAmount());
+        }
+        return insCPair;
+    }
+
+    public Integer addCType(String institution, Integer amountNew, Integer amountOld){
+        //amountNew 大于 amountOld，故新增
+        Integer re = 0;
+        for(Integer i = amountOld; i< amountNew; i++){
+            String name = "职员" + i;
+            String staffId ="C" + (Integer.parseInt(institution) * 10000 + i);
+            String position = "投票职员" + i;
+            re += staffMapper.addStaff(staffId,institution,'C',name,position);
+        }
+        return re;
+    }
+
+    public Integer deleteCType(String institution, Integer amountNew, Integer amountOld){
+        //amountNew 小于 amountOld，故删除
+        Integer re = 0;
+        for(Integer i = amountNew; i<amountOld; i++){
+            String staffId ="C" + (Integer.parseInt(institution) * 10000 + i);
+            re += staffMapper.deleteById(staffId);
+        }
+        return re;
+    }
 }
+

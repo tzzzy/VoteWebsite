@@ -1,10 +1,10 @@
 package com.boc.votewebsite.mapper;
 
 
+import com.boc.votewebsite.entity.InstitutionCType;
 import com.boc.votewebsite.entity.Staff;
 import com.boc.votewebsite.entity.StaffExport;
 import com.boc.votewebsite.entity.StaffManage;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -38,5 +38,8 @@ public interface StaffMapper {
 
     @Update("UPDATE STAFF SET PASSWORD = 456789 WHERE STAFF_ID = 1259138")
     Integer updatePasswordByStaffId(String id, String password);
+
+    @Select("SELECT INSTITUTION, COUNT(STAFF_ID) AS AMOUNT FROM STAFF WHERE TYPE = 'C' GROUP BY INSTITUTION")
+    List<InstitutionCType> findCAmount();
 
 }

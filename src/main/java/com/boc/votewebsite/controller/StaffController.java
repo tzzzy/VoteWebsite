@@ -1,11 +1,17 @@
 package com.boc.votewebsite.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.boc.votewebsite.entity.Project;
 import com.boc.votewebsite.entity.StaffExport;
+import com.boc.votewebsite.service.ProjectService;
 import com.boc.votewebsite.service.StaffService;
+import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +20,9 @@ import java.util.Map;
 public class StaffController {
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private ProjectService projectService;
 
     //获取所有的用户
     @GetMapping("/staff")
@@ -68,6 +77,14 @@ public class StaffController {
     @PostMapping("/staff-update")
     public JSONObject updateStaff(@RequestBody JSONObject jsonParam){
         JSONObject result = new JSONObject();
+        Date date = new Date();
+        Timestamp time = new Timestamp(date.getTime());
+        List<Project> projectList = projectService.findByTime(time);
+        if(projectList.size() == 0){
+            result.put("return_code", "9999");
+            result.put("return_msg", "在项目开放时间内无法进行员工信息修改");
+            return result;
+        }
         String id = jsonParam.get("id").toString();
         String name = jsonParam.get("name").toString();
         String institution = jsonParam.get("institution").toString();
@@ -113,21 +130,57 @@ public class StaffController {
     public JSONObject importStaff(@RequestBody JSONObject jsonParam){
         JSONObject result = new JSONObject();
         List<Map> staffs = (List<Map>) jsonParam.get("staffs");
-        Integer count = 0;
-        for(int i = 0; i < jsonParam.size(); i++){
+        Integer add = 0;
+        Integer update = 0;
+        for(int i = 0; i < staffs.size(); i++){
             Integer exist = staffService.findById(staffs.get(i).get("id").toString()).size();
+            String id = staffs.get(i).get("id").toString();
+            String institution = staffs.get(i).get("institution").toString();
+            char type = staffs.get(i).get("type").toString().charAt(0);
+            String name = staffs.get(i).get("name").toString();
+            String position = staffs.get(i).get("position").toString();
             if(exist > 0){
-                continue;
+                Integer updateResult = staffService.updateById(id,institution,type, name,position);
+                update += updateResult;
             }
-            Integer re = staffService.addStaff(staffs.get(i).get("id").toString(),
-                    staffs.get(i).get("institution").toString(), staffs.get(i).get("type").toString().charAt(0),
-                    staffs.get(i).get("name").toString(), staffs.get(i).get("position").toString());
-            count += re;
+            else {
+                Integer re = staffService.addStaff(id, institution, type, name, position);
+                add += re;
+            }
         }
         result.put("return_code", "0");
-        result.put("return_msg", "导入用户" + staffs.size() + "人,创建成功"+ count + "人");
+        result.put("return_msg", "导入用户" + staffs.size() + "人,创建成功"+ add + "人,更新成功"+ update + "人。");
         return result;
     }
 
+    @PostMapping("/create-c")
+    public JSONObject createTypeC(@RequestBody JSONObject jsonParam){
+        JSONObject result = new JSONObject();
+        Integer add = 0;
+        Integer delete = 0;
+        List<Map> ins = (List<Map>) jsonParam.get("institutions");
+        Map<String, Integer> currentCAmount = staffService.findCAmount();
+        for(int i = 0; i< ins.size(); i++){
+            if(currentCAmount.containsKey(ins.get(i).get("institution"))){
+                Integer amountOld = currentCAmount.get(ins.get(i).get("institution"));
+                Integer amountNew = Integer.valueOf(ins.get(i).get("amount").toString());
+                if(amountNew > amountOld){
+                    add += staffService.addCType(ins.get(i).get("institution").toString(),amountNew ,amountOld);
+                }
+                else if(amountNew.equals(amountOld)){
+                    continue;
+                }
+                else {
+                    delete += staffService.deleteCType(ins.get(i).get("institution").toString(),amountNew ,amountOld);
+                }
 
+            }
+            else{
+                add += staffService.addCType(ins.get(i).get("institution").toString(), (Integer) ins.get(i).get("amount"),0);
+            }
+        }
+        result.put("return_code", "0");
+        result.put("return_msg", "创建C类用户" + add + "人,删除C类用户" + delete + "人。");
+        return  result;
+    }
 }

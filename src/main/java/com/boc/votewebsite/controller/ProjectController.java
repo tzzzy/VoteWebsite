@@ -46,8 +46,6 @@ public class ProjectController {
             year = Integer.parseInt(jsonParam.get("year").toString());
             startTime = Timestamp.valueOf(jsonParam.get("startTime").toString());
             endTime = Timestamp.valueOf(jsonParam.get("endTime").toString());
-
-
         } catch (Exception e) {
             result.put("return_code", "9999");
             result.put("return_msg", "传入的数据格式错误");
