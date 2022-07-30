@@ -37,4 +37,8 @@ public class ProjectService {
     public List<Project> findByYear(Integer year){
         return projectMapper.findByYear(year);
     }
+
+    public Integer findLatest(){
+        return projectMapper.findLatest();
+    }
 }

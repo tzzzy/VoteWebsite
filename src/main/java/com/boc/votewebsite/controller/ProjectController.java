@@ -1,11 +1,9 @@
 package com.boc.votewebsite.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.boc.votewebsite.entity.Project;
-import com.boc.votewebsite.entity.Staff;
-import com.boc.votewebsite.entity.StaffExport;
-import com.boc.votewebsite.entity.StaffManage;
+import com.boc.votewebsite.entity.*;
 import com.boc.votewebsite.service.ProjectService;
+import com.boc.votewebsite.service.ResultService;
 import com.boc.votewebsite.service.StaffService;
 import com.boc.votewebsite.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +29,10 @@ public class ProjectController {
     private StaffService staffService;
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ResultService resultService;
+
 
     @PostMapping("/create-project")
     public JSONObject createProject(@RequestBody JSONObject jsonParam){
@@ -58,6 +60,14 @@ public class ProjectController {
             result.put("return_code", "9999");
             result.put("return_msg", year+"年第"+season+"季度的项目已存在");
             return result;
+        }
+        //将上一个项目在VOTE表中的数据更新到RESULT中
+        Integer latestProjectId = projectService.findLatest();
+        if(latestProjectId != null){
+            Integer resultNumber = 0;
+            resultNumber += resultService.addResult(latestProjectId,voteService.findByProjectIdAndStaffType(latestProjectId,'A'));
+            resultNumber += resultService.addResult(latestProjectId, voteService.findByProjectIdAndStaffType(latestProjectId,'B'));
+            System.out.print("add results from project:" +latestProjectId+",with "+resultNumber +"records");
         }
         //创建项目表中的记录
         Integer re = projectService.addProject(startTime, endTime, createTime, season, year);

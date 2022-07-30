@@ -18,7 +18,7 @@ public interface ProjectMapper {
     @Select("SELECT * FROM PROJECT WHERE SEASON =#{season} AND YEAR =#{year}")
     List<Project> findBySeasonAndYear(Integer season, Integer year);
 
-    @Insert("INSERT INTO PROJECT VALUES (PROJECT_SEQ.NEXTVAL, #{startTime}, #{endTime}, #{createTime}, #{season}, #{year})")
+    @Insert("INSERT INTO PROJECT VALUES (#{projectId}, #{startTime}, #{endTime}, #{createTime}, #{season}, #{year})")
     Integer addProject(Integer projectId,Timestamp startTime, Timestamp endTime, Timestamp createTime, Integer season, Integer year);
 
     @Delete("DELETE FROM PROJECT WHERE PROJECT_ID=#{projectId}")
@@ -26,4 +26,8 @@ public interface ProjectMapper {
 
     @Select("SELECT * FROM PROJECT WHERE YEAR =#{year}")
     List<Project> findByYear(Integer year);
+
+    @Select("SELECT MAX(PROJECT_ID)\n" +
+            "FROM PROJECT")
+    Integer findLatest();//最大的ID就是最新的项目ID
 }

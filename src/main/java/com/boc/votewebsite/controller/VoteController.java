@@ -6,6 +6,7 @@ import com.boc.votewebsite.entity.VoteList;
 import com.boc.votewebsite.entity.VoteProgress;
 import com.boc.votewebsite.entity.VoteResult;
 import com.boc.votewebsite.service.ProjectService;
+import com.boc.votewebsite.service.ResultService;
 import com.boc.votewebsite.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,9 @@ public class VoteController {
     private VoteService voteService;
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ResultService resultService;
 
 /*
 通过投票人的ID和项目ID来获取被投票人的集合，
@@ -151,27 +155,68 @@ public class VoteController {
             result.put("return_msg", year + "年不存在项目，请重新查找");
             return  result;
         }
-        if(season == 0){//查找全年结果去RESULT表中查找
-
-        }
-        Date date = new Date();
-        Timestamp time = new Timestamp(date.getTime());
-        List<Project> projectList = projectService.findByTime(time);
-        List<project> targetPorject = projectService.findBySeasonAndYear()
-        if(projectList.size() > 0){//当前有项目开放，从VOTE表中查找
-            List<VoteResult> data = voteService.findByProjectIdAndStaffType(projectList.get(0).getProjectID(),type);
-            if(data.size() == 0){
+        //查找全年结果去RESULT表中查找，当前正在进行的项目不会统计在内
+        if(season == 0){
+            List<VoteResult> res = resultService.findResultByYearAndType(year, type);
+            if(res.size() == 0){
                 result.put("return_code", "9999");
-                result.put("return_msg", "该项目缺少投票表，请联系数据库管理员");
+                result.put("return_msg", "未找到"+year+"年的结果，请重新查找");
                 return  result;
             }
             result.put("return_code", "0");
             result.put("return_msg", "查找成功");
-            result.put("data", data);
+            result.put("data", res);
             return  result;
         }
-        List<VoteResult> data = voteService.findByStaffTypeAndYear(year,type);
-
+        //查找非全年的项目
+        Date date = new Date();
+        Timestamp time = new Timestamp(date.getTime());
+        List<Project> projectList = projectService.findByTime(time);
+        if(projectList.size() > 0){//当前有项目开放
+            if(projectList.get(0).getYear() == year && projectList.get(0).getSeason() == season){
+                //确定查找的为当前项目，从VOTE表中查找
+                List<VoteResult> data = voteService.findByProjectIdAndStaffType(projectList.get(0).getProjectID(),type);
+                if(data.size() == 0){
+                    result.put("return_code", "9999");
+                    result.put("return_msg", "该项目缺少投票表，请联系数据库管理员");
+                    return  result;
+                }
+                result.put("return_code", "0");
+                result.put("return_msg", "查找成功");
+                result.put("data", data);
+                return  result;
+            }
+            //查找历史项目，从RESULT表中查找
+            List<Project> targetProject = projectService.findBySeasonAndYear(season, year);
+            List<VoteResult> rdata = resultService.findResultByIdAndType(targetProject.get(0).getProjectID(),type);
+            if(rdata.size() == 0){
+                result.put("return_code", "9999");
+                result.put("return_msg", "该项目信息不在结果表中，请联系数据库管理员");
+                return  result;
+            }
+            result.put("return_code", "0");
+            result.put("return_msg", "查找成功");
+            result.put("data", rdata);
+            return  result;
+        }
+        //当前没有项目在开放，从RESULT表中查找数据
+        Integer targetId = project.get(0).getProjectID();
+        List<VoteResult> rdata = resultService.findResultByIdAndType(targetId,type);
+        if(rdata.size()==0){//项目刚结束，结果没有从VOTE中更新到RESULT中，会出现找不到信息的情况，更新信息到RESULT表
+            Integer resultNumber = 0;
+            List<VoteResult> rdata2 = voteService.findByProjectIdAndStaffType(targetId,type);
+            resultNumber += resultService.addResult(targetId,voteService.findByProjectIdAndStaffType(targetId,'A'));
+            resultNumber += resultService.addResult(targetId, voteService.findByProjectIdAndStaffType(targetId,'B'));
+            System.out.print("add results from project:" +targetId+",with "+resultNumber +"records");
+            result.put("return_code", "0");
+            result.put("return_msg", "查找成功");
+            result.put("data", rdata2);
+            return  result;
+        }
+        result.put("return_code", "0");
+        result.put("return_msg", "查找成功");
+        result.put("data", rdata);
+        return  result;
     }
 
     @GetMapping("/vote-progress")

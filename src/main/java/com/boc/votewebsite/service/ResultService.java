@@ -3,34 +3,39 @@ package com.boc.votewebsite.service;
 import com.boc.votewebsite.entity.*;
 import com.boc.votewebsite.mapper.ResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ResultService {
     @Autowired
     private ResultMapper resultMapper;
 
-    List<VoteResult> findResultById(Integer projectId){
+    public List<VoteResult> findResultById(Integer projectId){
         return resultMapper.findResultById(projectId);
     }
 
-    Integer addResult(Integer projectId, List<VoteResult> results){
+    public Integer addResult(Integer projectId, List<VoteResult> results){
         Integer re = 0;
         for(int i = 0; i< results.size(); i++){
-            String voteId = results.get(i).getVoteId();
-            String staffName = results.get(i).getStaffName();
-            char staffType = results.get(i).getStaffType();
-            String staffInstitution = results.get(i).getStaffInstitution();
-            String staffInstitutionName = results.get(i).getStaffInstitutionName();
-            String voterInstitution = results.get(i).getVoterInstitution();
-            String voteType = results.get(i).getVoteType();
-            Double total = results.get(i).getTotal();
-            re += resultMapper.addResult(projectId,voteId,staffName,staffInstitution,staffInstitutionName,voterInstitution,voteType,total);
+            String staffId = results.get(i).getStaffId();
+            double equal = results.get(i).getEqual();
+            double supsub = results.get(i).getSupSub();
+            double average = results.get(i).getAverage();
+            re += resultMapper.addResult(projectId,staffId,equal, supsub, average);
         }
         return re;
     }
 
-    List<VoteResult> findResultByYear(Integer year){
+    public List<VoteResult> findResultByYear(Integer year){
         return resultMapper.findResultByYear(year);
+    }
+
+    public List<VoteResult> findResultByYearAndType(Integer year, char type){
+        return resultMapper.findResultByYearAndType(year, type);
+    }
+
+    public List<VoteResult> findResultByIdAndType(Integer projectId, char type){
+        return resultMapper.findResultByIdAndType(projectId, type);
     }
 }
