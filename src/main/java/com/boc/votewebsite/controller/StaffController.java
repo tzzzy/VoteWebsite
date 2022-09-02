@@ -176,7 +176,7 @@ public class StaffController {
 
             }
             else{
-                add += staffService.addCType(ins.get(i).get("institution").toString(), (Integer) ins.get(i).get("amount"),0);
+                add += staffService.addCType(ins.get(i).get("institution").toString(), Integer.valueOf(ins.get(i).get("amount").toString()),0);
             }
         }
         result.put("return_code", "0");

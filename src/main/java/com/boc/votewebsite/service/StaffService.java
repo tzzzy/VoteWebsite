@@ -67,7 +67,7 @@ public class StaffService {
         Integer re = 0;
         for(Integer i = amountOld; i< amountNew; i++){
             String name = "职员" + i;
-            String staffId ="C" + (Integer.parseInt(institution) * 10000 + i);
+            String staffId ="C" + institution + i;
             String position = "投票职员" + i;
             re += staffMapper.addStaff(staffId,institution,'C',name,position);
         }
@@ -78,7 +78,7 @@ public class StaffService {
         //amountNew 小于 amountOld，故删除
         Integer re = 0;
         for(Integer i = amountNew; i<amountOld; i++){
-            String staffId ="C" + (Integer.parseInt(institution) * 10000 + i);
+            String staffId ="C" + institution + i;
             re += staffMapper.deleteById(staffId);
         }
         return re;

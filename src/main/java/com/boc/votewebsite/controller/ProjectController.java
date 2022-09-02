@@ -91,11 +91,13 @@ public class ProjectController {
             Integer password = randomInt(100000,999999);
             Integer updateRe = staffService.updatePasswordByStaffId(staffs.get(i).getStaff_id(),password.toString());
             if(updateRe==0){
+                result.put("return_code", "9999");
                 result.put("return_msg", "创建密码失败，请重试" + voteService.deleteVotes(projectId).toString());
                 result.put("data", projectService.deleteProject(projectId));
                 return result;
             }
         }
+        result.put("return_code", "0 ");
         result.put("return_msg", "创建项目成功");
         return  result;
     }
