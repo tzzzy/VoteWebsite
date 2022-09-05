@@ -50,9 +50,15 @@ public class VoteController {
             return result;
         }
         List<Project> projectList = projectService.findByTime(time);
+        if(projectList.size()==0)
+        {
+            result.put("return_code", "9999");
+            result.put("return_msg", "该项目不在开放期间或该项目不存在");
+            return result;
+        }
         try {
             List<VoteList> voteList = voteService.getVoteList(projectList.get(0).getProjectID(), voterId,type);
-            if(voteList == null || projectList.size() == 0){
+            if(voteList == null || projectList == null){
                 result.put("return_code", "9999");
                 result.put("return_msg", "该项目不在开放期间或该项目不存在");
                 return result;
