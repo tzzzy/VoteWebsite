@@ -1,28 +1,28 @@
 ##测试服务器
-server:
-  port: 9090
-spring:
-  datasource:
-    driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@121.37.145.2:1521:orcl
-    username: SCOTT
-    password: tzy634867556
-  mvc:
-    view:
-      prefix: /pages/
-      suffix: .html
-
-##实际服务器
 #server:
 #  port: 9090
 #spring:
 #  datasource:
 #    driver-class-name: oracle.jdbc.driver.OracleDriver
-#    url: jdbc:oracle:thin:@22.214.1.50:1521:orcl
-#    username: system
-#    password: Tzboc888
+#    url: jdbc:oracle:thin:@121.37.145.2:1521:orcl
+#    username: SCOTT
+#    password: tzy634867556
 #  mvc:
 #    view:
 #      prefix: /pages/
 #      suffix: .html
+
+##实际服务器
+server:
+  port: 9090
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@22.214.1.50:1521:orcl
+    username: system
+    password: tzboc01
+  mvc:
+    view:
+      prefix: /pages/
+      suffix: .html
 
