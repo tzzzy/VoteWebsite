@@ -1,4 +1,4 @@
-##测试服务器
+#测试服务器
 server:
   port: 9090
 spring:
@@ -12,7 +12,7 @@ spring:
       prefix: /pages/
       suffix: .html
 
-##实际服务器
+###实际服务器
 #server:
 #  port: 9090
 #spring:
@@ -20,7 +20,7 @@ spring:
 #    driver-class-name: oracle.jdbc.driver.OracleDriver
 #    url: jdbc:oracle:thin:@22.214.1.50:1521:orcl
 #    username: system
-#    password: Tzboc888
+#    password: tzboc01
 #  mvc:
 #    view:
 #      prefix: /pages/

@@ -17,11 +17,23 @@ public class ResultService {
 
     public Integer addResult(Integer projectId, List<VoteResult> results){
         Integer re = 0;
+        if(results.size()==0){
+            return 0;
+        }
         for(int i = 0; i< results.size(); i++){
             String staffId = results.get(i).getStaffId();
-            double equal = results.get(i).getEqual();
-            double supsub = results.get(i).getSupSub();
-            double average = results.get(i).getAverage();
+            double equal = 0;
+            double supsub = 0;
+            double average = 0;
+            if(results.get(i).getEqual()!=null){
+                equal = results.get(i).getEqual();
+            }
+            if(results.get(i).getSupSub() != null){
+                supsub = results.get(i).getSupSub();
+            }
+            if(results.get(i).getAverage() != null){
+                average = results.get(i).getAverage();
+            }
             re += resultMapper.addResult(projectId,staffId,equal, supsub, average);
         }
         return re;

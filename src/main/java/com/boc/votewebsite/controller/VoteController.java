@@ -179,7 +179,9 @@ public class VoteController {
         Timestamp time = new Timestamp(date.getTime());
         List<Project> projectList = projectService.findByTime(time);
         if(projectList.size() > 0){//当前有项目开放
-            if(projectList.get(0).getYear() == year && projectList.get(0).getSeason() == season){
+            Integer thisyear = projectList.get(0).getYear();
+            Integer thisseason = projectList.get(0).getSeason();
+            if(thisyear.equals(year)  && thisseason.equals(season)){
                 //确定查找的为当前项目，从VOTE表中查找
                 List<VoteResult> data = voteService.findByProjectIdAndStaffType(projectList.get(0).getProjectID(),type);
                 if(data.size() == 0){
@@ -208,12 +210,8 @@ public class VoteController {
         //当前没有项目在开放，从RESULT表中查找数据
         Integer targetId = project.get(0).getProjectID();
         List<VoteResult> rdata = resultService.findResultByIdAndType(targetId,type);
-        if(rdata.size()==0){//项目刚结束，结果没有从VOTE中更新到RESULT中，会出现找不到信息的情况，更新信息到RESULT表
-            Integer resultNumber = 0;
+        if(rdata.size()==0){//项目刚结束，结果没有从VOTE中更新到RESULT中，会出现找不到信息的情况，更新信息到RESULT表***
             List<VoteResult> rdata2 = voteService.findByProjectIdAndStaffType(targetId,type);
-            resultNumber += resultService.addResult(targetId,voteService.findByProjectIdAndStaffType(targetId,'A'));
-            resultNumber += resultService.addResult(targetId, voteService.findByProjectIdAndStaffType(targetId,'B'));
-            System.out.print("add results from project:" +targetId+",with "+resultNumber +"records");
             result.put("return_code", "0");
             result.put("return_msg", "查找成功");
             result.put("data", rdata2);

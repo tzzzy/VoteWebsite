@@ -65,8 +65,15 @@ public class ProjectController {
         Integer latestProjectId = projectService.findLatest();
         if(latestProjectId != null){
             Integer resultNumber = 0;
-            resultNumber += resultService.addResult(latestProjectId,voteService.findByProjectIdAndStaffType(latestProjectId,'A'));
-            resultNumber += resultService.addResult(latestProjectId, voteService.findByProjectIdAndStaffType(latestProjectId,'B'));
+            List<VoteResult> aResult = voteService.findByProjectIdAndStaffType(latestProjectId,'A');
+            List<VoteResult> bResult = voteService.findByProjectIdAndStaffType(latestProjectId,'B');
+            resultNumber += resultService.addResult(latestProjectId, aResult);
+            resultNumber += resultService.addResult(latestProjectId, bResult);
+            if(resultNumber == 0){
+                result.put("return_code", "9999");
+                result.put("return_msg", "更新分数失败！");
+                return result;
+            }
             System.out.print("add results from project:" +latestProjectId+",with "+resultNumber +"records");
         }
         //创建项目表中的记录

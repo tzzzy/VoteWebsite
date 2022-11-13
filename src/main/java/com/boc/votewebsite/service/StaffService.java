@@ -22,7 +22,7 @@ public class StaffService {
     }
 
     public List<StaffManage> findAllStaff(){
-        return staffMapper.findAll();
+        return staffMapper.findAllExceptC();
     }
 
     public List<StaffManage> findByStaffName(String staffName){
