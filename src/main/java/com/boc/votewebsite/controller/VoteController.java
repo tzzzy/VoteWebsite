@@ -166,7 +166,7 @@ public class VoteController {
             List<VoteResult> res = resultService.findResultByYearAndType(year, type);
             if(res.size() == 0){
                 result.put("return_code", "9999");
-                result.put("return_msg", "未找到"+year+"年的结果，请重新查找");
+                result.put("return_msg", "未找到"+year+"年的结果或该年的项目正在进行中，请重新查找");
                 return  result;
             }
             result.put("return_code", "0");
