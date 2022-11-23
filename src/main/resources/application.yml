@@ -6,7 +6,7 @@ spring:
     driver-class-name: oracle.jdbc.driver.OracleDriver
     url: jdbc:oracle:thin:@121.37.145.2:1521:orcl
     username: SCOTT
-    password: tzy634867556
+    password: tzy123456
   mvc:
     view:
       prefix: /pages/
