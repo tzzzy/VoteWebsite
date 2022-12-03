@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static cn.hutool.core.util.RandomUtil.randomInt;
+import static cn.hutool.core.util.RandomUtil.randomStringUpper;
 
 @RestController
 @CrossOrigin
@@ -94,9 +94,16 @@ public class ProjectController {
         }
         //更新密码
         List<StaffExport> staffs= staffService.findAllExport();
+        //创建足够用的不同的密码
+        Set<String> passwords = new HashSet<String>();
+        while(passwords.size() < staffs.size()){
+            String pwd = randomStringUpper(12);
+            passwords.add(pwd);
+        }
+        Iterator iterator = passwords.iterator();
         for(int i = 0;i < staffs.size(); i++){
-            Integer password = randomInt(100000,999999);
-            Integer updateRe = staffService.updatePasswordByStaffId(staffs.get(i).getStaff_id(),password.toString());
+            //Integer password = randomInt(100000,999999); 用不到了
+            Integer updateRe = staffService.updatePasswordByStaffId(staffs.get(i).getStaff_id(),iterator.next().toString());
             if(updateRe==0){
                 result.put("return_code", "9999");
                 result.put("return_msg", "创建密码失败，请重试" + voteService.deleteVotes(projectId).toString());

@@ -21,6 +21,10 @@ public class StaffService {
         return staffMapper.findByStaffIdPassword(staffId, password);
     }
 
+    public List<Staff> matchPassword(String password){
+        return staffMapper.findByPassword(password);
+    }
+
     public List<StaffManage> findAllStaff(){
         return staffMapper.findAllExceptC();
     }

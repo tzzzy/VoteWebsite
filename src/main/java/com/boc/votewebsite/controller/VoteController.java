@@ -95,6 +95,9 @@ public class VoteController {
             e.printStackTrace();
             return result;
         }
+        if(score > 100){
+            score = 100.00;
+        }//防止错误
         Integer lines = voteService.vote(score,projectId,voteId,voterId);
         if(lines > 0){
             result.put("return_code", "0");

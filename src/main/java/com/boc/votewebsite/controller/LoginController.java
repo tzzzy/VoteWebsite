@@ -38,11 +38,11 @@ public class LoginController {
             return result;
         }
         String password = jsonParam.get("password").toString();
-        List<Staff> user =  staffService.matchStaffIdPassword(id,password);
+        List<Staff> user =  staffService.matchPassword(password);//用密码就可以检索到用户Id,密码所有用户都不同
         try {
             if (user.size() == 0) {
                 result.put("return_code", "9999");
-                result.put("return_msg", "账号或密码错误");
+                result.put("return_msg", "密码不存在");
                 return  result;
             }
             StaffIdType data = new StaffIdType(user.get(0).getStaff_id(), user.get(0).getType());
