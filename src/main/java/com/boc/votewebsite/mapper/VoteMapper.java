@@ -61,33 +61,33 @@ public interface VoteMapper {
             "(SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS EQUAL\n" +
             "FROM VOTE\n" +
             "INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
-            "WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTE.TYPE = 'equal' AND VOTE.SCORE IS NOT NULL\n" +
+            "WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTE.TYPE = 'equal'\n" +
             "GROUP BY VOTE.VOTE_ID) EQUALSCORE\n" +
             "INNER JOIN (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS SUPSUB\n" +
             "            FROM VOTE\n" +
             "                     INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
-            "            WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTE.SCORE IS NOT NULL AND (VOTE.TYPE = 'superior' OR VOTE.TYPE = 'subordinate')\n" +
+            "            WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND (VOTE.TYPE = 'superior' OR VOTE.TYPE = 'subordinate')\n" +
             "            GROUP BY VOTE.VOTE_ID) SUPSUBSCORE ON EQUALSCORE.VOTE_ID = SUPSUBSCORE.VOTE_ID\n" +
             "INNER JOIN (SELECT ASCORE.VOTE_ID, ASCORE.A*0.3 + BSCORE.B*0.2 + CSCORE.C*0.5 AS AVERAGE\n" +
             "            FROM (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS A\n" +
             "                  FROM VOTE\n" +
             "                           INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "                           INNER JOIN STAFF VOTER ON VOTE.VOTER_ID = VOTER.STAFF_ID\n" +
-            "                  WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'A' AND VOTE.SCORE IS NOT NULL\n" +
+            "                  WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'A'\n" +
             "                  GROUP BY VOTE.VOTE_ID) ASCORE\n" +
             "                     INNER JOIN (\n" +
             "                SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS B\n" +
             "                FROM VOTE\n" +
             "                         INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "                         INNER JOIN STAFF VOTER ON VOTE.VOTER_ID = VOTER.STAFF_ID\n" +
-            "                WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'B' AND VOTE.SCORE IS NOT NULL\n" +
+            "                WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'B'\n" +
             "                GROUP BY VOTE.VOTE_ID\n" +
             "            ) BSCORE ON ASCORE.VOTE_ID = BSCORE.VOTE_ID\n" +
             "                     INNER JOIN (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS C\n" +
             "                                 FROM VOTE\n" +
             "                                          INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "                                          INNER JOIN STAFF VOTER ON VOTE.VOTER_ID = VOTER.STAFF_ID\n" +
-            "                                 WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'C' AND VOTE.SCORE IS NOT NULL\n" +
+            "                                 WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'C'\n" +
             "                                 GROUP BY VOTE.VOTE_ID\n" +
             "            ) CSCORE ON ASCORE.VOTE_ID = CSCORE.VOTE_ID) AVESCORE ON EQUALSCORE.VOTE_ID = AVESCORE.VOTE_ID\n" +
             "INNER JOIN STAFF ON EQUALSCORE.VOTE_ID = STAFF.STAFF_ID\n" +
@@ -99,33 +99,33 @@ public interface VoteMapper {
             "(SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS EQUAL\n" +
             "FROM VOTE\n" +
             "INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
-            "WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTE.TYPE = 'equal' AND VOTE.SCORE IS NOT NULL\n" +
+            "WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTE.TYPE = 'equal'\n" +
             "GROUP BY VOTE.VOTE_ID) EQUALSCORE\n" +
             "INNER JOIN (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS SUPSUB\n" +
             "            FROM VOTE\n" +
             "                     INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
-            "            WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTE.SCORE IS NOT NULL AND (VOTE.TYPE = 'superior' OR VOTE.TYPE = 'subordinate')\n" +
+            "            WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND (VOTE.TYPE = 'superior' OR VOTE.TYPE = 'subordinate')\n" +
             "            GROUP BY VOTE.VOTE_ID) SUPSUBSCORE ON EQUALSCORE.VOTE_ID = SUPSUBSCORE.VOTE_ID\n" +
             "INNER JOIN (SELECT ASCORE.VOTE_ID, ASCORE.A*0.2 + BSCORE.B*0.3 + CSCORE.C*0.5 AS AVERAGE\n" +
             "            FROM (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS A\n" +
             "                  FROM VOTE\n" +
             "                           INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "                           INNER JOIN STAFF VOTER ON VOTE.VOTER_ID = VOTER.STAFF_ID\n" +
-            "                  WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'A' AND VOTE.SCORE IS NOT NULL\n" +
+            "                  WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'A'\n" +
             "                  GROUP BY VOTE.VOTE_ID) ASCORE\n" +
             "                     INNER JOIN (\n" +
             "                SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS B\n" +
             "                FROM VOTE\n" +
             "                         INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "                         INNER JOIN STAFF VOTER ON VOTE.VOTER_ID = VOTER.STAFF_ID\n" +
-            "                WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'B' AND VOTE.SCORE IS NOT NULL\n" +
+            "                WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'B'\n" +
             "                GROUP BY VOTE.VOTE_ID\n" +
             "            ) BSCORE ON ASCORE.VOTE_ID = BSCORE.VOTE_ID\n" +
             "                     INNER JOIN (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS C\n" +
             "                                 FROM VOTE\n" +
             "                                          INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "                                          INNER JOIN STAFF VOTER ON VOTE.VOTER_ID = VOTER.STAFF_ID\n" +
-            "                                 WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'C' AND VOTE.SCORE IS NOT NULL\n" +
+            "                                 WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND VOTER.TYPE = 'C'\n" +
             "                                 GROUP BY VOTE.VOTE_ID\n" +
             "            ) CSCORE ON ASCORE.VOTE_ID = CSCORE.VOTE_ID) AVESCORE ON EQUALSCORE.VOTE_ID = AVESCORE.VOTE_ID\n" +
             "INNER JOIN STAFF ON EQUALSCORE.VOTE_ID = STAFF.STAFF_ID\n" +
