@@ -42,7 +42,8 @@ public class VoteService {
     }
 
     public Integer addVotes(Integer projectId){
-        List<StaffManage> staffs = staffMapper.findAll();
+        //找到所有需要投票的人
+        List<StaffManage> staffs = staffMapper.findAllExceptEmpty();
         for(int i = 0; i < staffs.size(); i++){
             for(int j = 0; j < staffs.size(); j++){
                 String voterId = staffs.get(i).getStaff_id();

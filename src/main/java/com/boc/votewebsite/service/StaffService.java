@@ -26,8 +26,9 @@ public class StaffService {
     }
 
     public List<StaffManage> findAllStaff(){
-        return staffMapper.findAllExceptC();
+        return staffMapper.findAll();
     }
+
 
     public List<StaffManage> findByStaffName(String staffName){
         return  staffMapper.findByName(staffName);
