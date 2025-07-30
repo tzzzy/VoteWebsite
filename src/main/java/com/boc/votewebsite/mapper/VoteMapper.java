@@ -68,7 +68,7 @@ public interface VoteMapper {
             "                     INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "            WHERE STAFF.TYPE = 'A' AND PROJECT_ID = #{projectId} AND (VOTE.TYPE = 'superior' OR VOTE.TYPE = 'subordinate')\n" +
             "            GROUP BY VOTE.VOTE_ID) SUPSUBSCORE ON EQUALSCORE.VOTE_ID = SUPSUBSCORE.VOTE_ID\n" +
-            "INNER JOIN (SELECT ASCORE.VOTE_ID, ASCORE.A*0.3 + BSCORE.B*0.2 + CSCORE.C*0.5 AS AVERAGE\n" +
+            "INNER JOIN (SELECT ASCORE.VOTE_ID, ASCORE.A*0.7 + BSCORE.B*0.2 + CSCORE.C*0.1 AS AVERAGE\n" +
             "            FROM (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS A\n" +
             "                  FROM VOTE\n" +
             "                           INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
@@ -106,7 +106,7 @@ public interface VoteMapper {
             "                     INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
             "            WHERE STAFF.TYPE = 'B' AND PROJECT_ID = #{projectId} AND (VOTE.TYPE = 'superior' OR VOTE.TYPE = 'subordinate')\n" +
             "            GROUP BY VOTE.VOTE_ID) SUPSUBSCORE ON EQUALSCORE.VOTE_ID = SUPSUBSCORE.VOTE_ID\n" +
-            "INNER JOIN (SELECT ASCORE.VOTE_ID, ASCORE.A*0.2 + BSCORE.B*0.3 + CSCORE.C*0.5 AS AVERAGE\n" +
+            "INNER JOIN (SELECT ASCORE.VOTE_ID, ASCORE.A*0.5 + BSCORE.B*0.3 + CSCORE.C*0.2 AS AVERAGE\n" +
             "            FROM (SELECT VOTE_ID, SUM(VOTE.SCORE)/COUNT(VOTE.VOTER_ID) AS A\n" +
             "                  FROM VOTE\n" +
             "                           INNER JOIN STAFF ON VOTE.VOTE_ID = STAFF.STAFF_ID\n" +
